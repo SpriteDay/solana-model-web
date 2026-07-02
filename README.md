@@ -1,0 +1,1 @@
+# General Next.js example
