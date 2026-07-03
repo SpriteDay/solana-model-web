@@ -4,7 +4,7 @@ Solana is a high-performance, low-latency blockchain renowned for its speed, eff
 
 Solana takes an integrated approach to blockchain development, leveraging the founding team's decades of experience in building distributed systems. One of Solana's core principles is that software should never get in the way of hardware. This means that software exploits whatever hardware it runs on to the fullest and scales with it. As a single-chain blockchain where everything happens in one place, all applications built on this base inherit composability, allowing them to interact and build upon one another. This architecture also ensures a straightforward and intuitive user experience without the need for bridging, separate chain IDs, or liquidity fragmentation.
 
-[./images/image06.jpg]
+![image](./images/image06.jpg)
 
 Solana is evolving rapidly, with recent developments including SVM rollups and ZK Compression as important scaling solutions. While these projects may one day shape our future perception of Solana, they are currently in the very early stages of development or adoption and will not be covered in this report.
 
@@ -12,7 +12,7 @@ Solana is evolving rapidly, with recent developments including SVM rollups and Z
 
 Our primary lens for understanding Solana throughout this report will be the lifecycle of a typical transaction. To construct a most basic model for understanding Solana transactions, we can outline the process as follows:
 
-[./images/image03.jpg]
+![image](./images/image03.jpg)
 
 - Users initiate transactions, all of which are sent to the current lead block producer (known as the leader). The leader compiles these transactions into a block, executing them and thereby updating the blockchain's state.
 - This block of transactions is then propagated throughout the network for other validators to execute and confirm.
@@ -22,7 +22,7 @@ The subsequent sections of this report will expand this model and delve into thi
 
 ## Six stages
 
-[./images/image05.jpg]
+![image](./images/image05.jpg)
 
 We will reference the six-stage visual shown above throughout this report, as it offers us a consistent framework for understanding the relationships between Solana's core elements.
 
@@ -54,13 +54,13 @@ Private keys can also be derived from mnemonic seed phrases, usually 12 or 24 wo
 
 Solana utilizes Ed25519, a widely used elliptic curve digital signature algorithm, for its public-key cryptography needs. Ed25519 is favored for its small key size, small signature size, fast computation, and immunity to many common attacks. Each Solana wallet address represents a point on the Ed25519 elliptic curve.
 
-[./images/image07.jpg]
+![image](./images/image07.jpg)
 
 ## Solana Transactions
 
 Sending a transaction is the only way to mutate state on Solana. Any write operation is performed through a transaction, and transactions are atomic—either everything the transaction attempts to do happens or the transaction fails. A transaction, more formally known as a "transaction message," comprises four sections: a header, a list of account addresses, a recent blockhash, and instructions.
 
-[./images/image08.jpg]
+![image](./images/image08.jpg)
 
 Account Addresses: This list includes all the accounts that will be read from or written to during the transaction. Building such a list for every transaction is a requirement unique to Solana and can be challenging for developers. However, knowing in advance which pieces of state a transaction will interact with enables optimizations not possible on many other blockchains.
 
@@ -85,7 +85,7 @@ prioritization fee = compute unit price (micro-lamports) x compute unit limit
 
 Currently, 50% of all transaction-related fees are burnt, permanently removing this SOL from circulation with the remaining 50% going to the block producer. A new change (SIMD 96) is soon to be introduced allowing for 100% of prioritization fees to go to the block producer. Base fees remain unchanged.
 
-[./images/image09.jpg]
+![image](./images/image09.jpg)
 
 A user connects their wallet to the application, allowing the app to read the user’s public key. The private key remains encrypted and securely sandboxed in a separate environment from the application.
 
@@ -105,7 +105,7 @@ Unlike full validator nodes, RPC nodes do not hold any stake in the network. Wit
 
 Solana stands out because it was designed from the outset to operate without a mempool. Unlike traditional blockchains that use gossip protocols to randomly and broadly propagate transactions across the network, Solana forwards all transactions to a predetermined lead validator, known as the leader, for each slot.
 
-[./images/image10.jpg]
+![image](./images/image10.jpg)
 
 > Solana operates four clusters: Localnet, Testnet, Devnet, and Mainnet-Beta. When people refer to Solana or the Solana network, they almost always refer to Mainnet-Beta. Mainnet-Beta is the only cluster where tokens hold real value, while the other clusters are used solely for testing purposes.
 
@@ -115,7 +115,7 @@ Once an RPC receives a transaction message to be included in a block, it must be
 
 In early 2024, Solana introduced a new mechanism aimed at preventing spam and enhancing Sybil resistance, known as "Stake-Weighted Quality of Service" (SWQoS). This system enables leaders to prioritize transaction messages that are proxied through other staked validators. Here, validators with a higher stake are granted a proportionally higher capacity to transmit transaction message packets to the leader. This approach effectively mitigates Sybil attacks from non-staked nodes across the network.
 
-[./images/image11.jpg]
+![image](./images/image11.jpg)
 
 Under this model, validators can also engage in agreements to lease their stake-weighted capacity to RPC nodes. In return, RPC nodes gain increased bandwidth, allowing them to achieve greater transaction inclusion rates in blocks. Notably, 80% of a leader’s capacity (2,000 connections) is reserved for SWQoS. The remaining 20% (500 connections) is allocated for transaction messages from non-staked nodes. This allocation strategy mirrors priority lanes on highways, where drivers pay a toll to avoid traffic.
 
@@ -125,7 +125,7 @@ SWQoS has impacted the Solana ecosystem by raising the requirements to forward t
 
 In late 2022, Solana adopted the QUIC networking protocol to manage transaction message transmission to the leader. This transition was prompted by network disruptions caused by bots spamming on-chain NFT mints. QUIC facilitates rapid, asynchronous communication.
 
-[./images/image12.jpg]
+![image](./images/image12.jpg)
 
 Initially developed by Google in 2012, QUIC attempts to offer the best of both worlds. It facilitates rapid, asynchronous communication similar to UDP, but with the secure sessions and advanced flow control strategies of TCP. This allows for limits to be placed on individual sources of traffic so that the network can focus on processing genuine transactions. It also has a concept of separate streams; so if one transaction is dropped, it doesn’t need to block the remaining ones. In short, QUIC can be thought of as attempting to combine the best characteristics of TCP and UDP.
 
@@ -141,7 +141,7 @@ Two slots before assuming leadership, a validator halts transaction forwarding t
 
 Upon receipt, transaction messages enter the Transaction Processing Unit (TPU), the validator's core logic responsible for block production. Here, the transaction processing sequence begins with the Fetch Stage, where transactions are received via QUIC. Subsequently, transactions progress to the SigVerify Stage, undergoing rigorous validation checks. Here the validator verifies the validity of signatures, checks for the correct number of signatures, and eliminates duplicate transactions.
 
-[./images/image13.jpg]
+![image](./images/image13.jpg)
 
 ## Banking Stage
 
@@ -157,7 +157,7 @@ Once transactions have been grouped into entries, they are ready to be executed 
 
 ## Clients
 
-[./images/image14.jpg]
+![image](./images/image14.jpg)
 
 Solana is a network comprising thousands of independently operated nodes collaborating to maintain a single unified ledger. Each node constitutes a high-performance machine running the same intelligent open-source software known as a client.
 
@@ -167,7 +167,7 @@ Solana launched with a single validator client software — originally the Solan
 
 Proof of History (PoH) is Solana's secret sauce, functioning like a special clock in every validator that facilitates synchronization across the network. PoH establishes a reliable source of truth for the order of events and the passage of time. Most critically it ensures adherence to the leader schedule. Despite similar names, Proof of History is not a consensus algorithm such as Proof of Work.
 
-[./images/image16.jpg]
+![image](./images/image16.jpg)
 
 Communication overhead between nodes typically increases as networks expand, and coordination becomes increasingly complicated. Solana mitigates this by replacing node-to-node communication with a PoH local computation. This means validators can commit to a block with just a single round of voting. Trusted timestamps in messages ensure that validators cannot start their blocks prematurely and must wait a minimum amount of time before submitting their block. Underlying PoH are the unique properties of hashing algorithms, specifically SHA256:
 
@@ -182,7 +182,7 @@ Within each validator client, a dedicated "Proof of History service" continually
 
 The range of performance in computing SHA-256 across different CPUs is surprisingly narrow, with only small differences among the fastest machines. A common upper limit has already been reached, despite significant time and effort being invested in optimizing this function, largely due to Bitcoin's reliance on it.
 
-[./images/image17.jpg]
+![image](./images/image17.jpg)
 
 During a leader’s slot, the PoH service will receive newly processed entries from the banking stage. The current PoH hash plus a hash of all transactions in the entry are combined into the next PoH hash. This serves as a timestamp that inserts the entry into the chain of hashes, proving the sequence in which transactions were processed. This process not only confirms the passage of time but also serves as a cryptographic record of the transactions.
 In a single block, there are 800,000 hashes. The PoH stream also includes "ticks,"
@@ -199,7 +199,7 @@ Within a Solana validator, the global state is maintained in the accounts databa
 
 Over time the number of Solana accounts has surged into the hundreds of millions. This large number is partly because, as Solana developers are fond of saying, "Everything on Solana is an account!"
 
-[./images/image19.jpg]
+![image](./images/image19.jpg)
 
 ## Solana Accounts
 
@@ -242,7 +242,7 @@ Solana programs, being read-only executable files, must store state using “Pro
 
 PDA addresses exist "off-curve," meaning they are not on the Ed25519 curve like normal addresses. Only the program that owns the PDA can programmatically generate signatures for it, ensuring that it’s the only one that can modify the PDA's state.
 
-[./images/image21.jpg]
+![image](./images/image21.jpg)
 
 Above: Solana token accounts are specific examples of Program Derived Addresses (PDAs). They are used to hold tokens and live “off-curve.” The Associated Token Account (ATA) program ensures that each wallet can only have one associated token account for each token type, providing a standardized way to manage token accounts.
 
@@ -252,7 +252,7 @@ During the banking stage, transactions are organized into entries and sent to th
 
 Turbine is the process through which the leader propagates their block to the rest of the network. Inspired by BitTorrent, it is designed to be fast and efficient, reducing communication overhead and minimizing the amount of data a leader needs to send.
 
-[./images/image22.jpg]
+![image](./images/image22.jpg)
 
 Turbine achieves this by breaking down transaction data into "shreds'' through a process called "shredding." Shreds are small packets of data, up to 1280 bytes, similar to individual frames in a video stream. When reassembled, these shreds allow validators to replay the entire block. The shreds are sent over the internet between validators using UDP and utilize erasure coding to handle packet loss or malicious dropping of packets. Erasure coding, a polynomial-based error detection and correction scheme, ensures data integrity. Even if some shreds are lost, the block can still be reconstructed.
 
@@ -260,7 +260,7 @@ Shreds are grouped into batches known as forward error correction (FEC) batches.
 
 The leader initially broadcasts to a single root node, which disseminates the shreds to all other validator nodes. This root node changes with each shred. Validators are organized into layers, forming the "Turbine Tree." Validators with a larger stake amount are typically positioned toward the top of the tree, while those with lower stakes are placed toward the bottom.
 
-[./images/image23.jpg]
+![image](./images/image23.jpg)
 
 The tree usually spans two or three hops, depending on the number of active validators. For visual simplicity, a fanout of 3 is depicted above, but Solana’s actual fanout value is currently set to 200. For security reasons, the order of the tree is rotated for each new batch of shreds.
 
@@ -270,7 +270,7 @@ The primary goal of such a system is to alleviate the outbound data egress press
 
 Once a validator receives a new block from the leader via Turbine, it must validate all transactions within each entry. This involves replaying the entire block, validating the PoH hashes in parallel, recreating the transactions in the sequence dictated by PoH, and updating its local bank.
 
-[./images/image25.jpg]
+![image](./images/image25.jpg)
 
 This process is handled by the Transaction Validation Unit (TVU), which is analogous to the leader’s Transaction Processing Unit (TPU), serving as the core logic responsible for processing shreds and block validation. Like the TPU, the TVU flow is broken down into several stages, starting with the Shred Fetch Stage where shreds are received over Turbine. In the subsequent Shred Verify Leader Signature Stage, the shreds undergo multiple sanity checks, most notably the verification of the leader’s signature, which ensures that the received shreds originated from the leader.
 
@@ -278,7 +278,7 @@ In the Retransmit Stage, the validator, based on its location in the Turbine tre
 
 The Replay Stage is analogous to the banking stage in the TPU; it is the most important stage and can be more directly described as the block validation stage. Replay is a single-threaded process loop that orchestrates many key operations, including voting, resetting the PoH clock, and switching banks.
 
-[./images/image01.jpg]
+![image](./images/image01.jpg)
 
 Above: the replay stage is responsible for switching the validator into leader mode and beginning block production. Original visual by Justin Starry, Anza
 
@@ -300,7 +300,7 @@ Solana validators must vote on these forks and use a consensus algorithm to dete
 
 Each slot has a predetermined leader for which only that leader's block will be accepted; there cannot be two proposed blocks for a single slot. Therefore the number of potential forks is limited to a "there/not-there" skip list of forks that can emerge at the boundaries of leader rotation slots. Once a validator chooses a fork, it is committed to this fork until a lockout time expires, meaning it must stick with its choice for a minimum period.
 
-[./images/image26.jpg]
+![image](./images/image26.jpg)
 
 The Solana "skip rate"—the percentage of slots in which a block was not produced—varies from 2% to 10%, with forks being the primary reason for these skipped slots. Other possible reasons for skipped slots include the start of a new epoch, a leader being offline, or the production of an invalid block.
 
@@ -343,7 +343,7 @@ Google Bigtable Instance: Stores block data from the genesis block onward, forma
 
 Solana employs inflation to distribute staking rewards by generating new SOL tokens each epoch. This process causes non-stakers' network share to decrease relative to stakers, leading to a wealth transfer from non-stakers to stakers. Inflation started in early 2021 at an initial rate of 8% which decreases by 15% annually until it stabilizes at a long-term rate of 1.5%.
 
-[./images/image31.jpg]
+![image](./images/image31.jpg)
 
 Any SOL token holder can earn rewards and help secure the network by staking tokens to one or more validators. Assigning tokens to a validator is known as delegating. Delegating tokens to a validator indicates trust in the validator. However, it does not give the validator ownership or control over the tokens. All staking, unstaking, and delegation actions are executed at the beginning of the next new epoch.
 
@@ -377,7 +377,7 @@ As of writing, over 80% (source) of the stake on Solana utilizes the Jito client
 
 When leaders use the Jito client validator, their transactions are initially directed to the Jito-Relayer. This open-source software functions as a transaction proxy router. Other network nodes remain unaware of the Jito-Relayer's existence, as they simply send transactions to the address and port configuration the leader has advertised over the gossip network as their ingress_socket, assuming it to be the leader's.
 
-[./images/image32.jpg]
+![image](./images/image32.jpg)
 
 The relayer holds all transactions for 200 milliseconds before forwarding them to the leader. This "speed bump" mechanism delays incoming transaction messages, providing a brief window for conducting auctions. After 200 milliseconds, the relayer optimistically releases the transactions regardless of the auction results.
 
